@@ -43,7 +43,7 @@
               <a class="nav-link" href="about.php">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contact.php">Contact</a>
+              <a class="nav-link" href="addarticle.php">Buat Artikel Baru</a>
             </li>
           </ul>
         </div>

@@ -1,5 +1,42 @@
-<?php
+<?php session_start();
 	include "function/databaseConnect.php";
+	include 'function/security.php';
+	$host  = $_SERVER['HTTP_HOST'];
+	$failed = false;
+	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
+	$redirect = 'addarticle.php';
+	if(isset($_SESSION['login_user']))
+	{
+		header("Location: https://$host$url/$redirect");
+	}
+	if($_SERVER["REQUEST_METHOD"] == "POST")
+	{
+		$encryptPassword = encrypt($_POST['pass']);
+		$myusername = mysqli_real_escape_string($conn,sanitize($_POST['username']));
+		$mypassword = mysqli_real_escape_string($conn,sanitize($encryptPassword)); 
+		$sql = "SELECT username FROM administrator WHERE username = '$myusername' and password = '$mypassword'";
+		$result = mysqli_query($conn,$sql);
+		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+		$active = $row['active'];
+		$count = mysqli_num_rows($result);
+		if($count == 1)
+		{
+			$_SESSION['login_user'] = $myusername;
+			header("Location: https://$host$url/$redirect");
+		}
+		else
+		{
+			$failed = true;
+		}
+	}
+	function errorLogin()
+	{
+		echo "<div class='alert alert-danger' id='error'>";
+		echo "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
+		echo "</button>";
+		echo "<strong>Your Username or Password is invalid!</strong>";
+		echo "</div>";
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,14 +91,14 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <header class="masthead" style="background-image: url('img/contact-bg.jpg')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            <div class="page-heading">
+              <h1>Log In</h1>
+              <span class="subheading">Kamu Eki bukan?.</span>
             </div>
           </div>
         </div>
@@ -72,34 +109,37 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-		<?php
-			//Menghitung jumlah row di tabel
-			$sql = "SELECT * FROM `article`";
-			$connStatus = $conn->query($sql);
-			$numberOfRows = mysqli_num_rows($connStatus);
-			$sql = "SELECT title, subtitle FROM `article`";
-			$result = $conn->query($sql);
-			if ($result->num_rows > 0)
-			{
-				$index = 0;
-				while($row = $result->fetch_assoc())
+          <p>Cuman Eki yang boleh bikin artikel baru, buktikan kalau kamu itu Eki!</p>
+          <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
+          <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
+          <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+          <form name="sentMessage" id="contactForm" novalidate>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Username</label>
+                <input type="text" class="form-control" placeholder="Username" id="name" name="username" required data-validation-required-message="Please enter username.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Password" id="email" name="pass" required data-validation-required-message="Please enter password.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+			<?php
+				if ($failed == true)
 				{
-					echo '<div class="post-preview">';
-						echo '<a href="post.php?number=' .$index. '">';
-							echo '<h2 class="post-title">';
-								echo $row["title"];
-							echo '</h2>';
-							echo '<h3 class="post-subtitle">';
-								echo $row["subtitle"];
-							echo '</h3>';
-						echo '</a>';
-					echo '</div>';
-					echo '<hr>';
-					$index++;
+					errorLogin();
 				}
-			}
-		?>
-          <!-- Pager -->
+			?>
+              <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Log In</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -147,9 +187,24 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <!--<script src="js/contact_me.js"></script>-->
+
     <!-- Custom scripts for this template -->
     <script src="js/clean-blog.min.js"></script>
-
+	<script>
+	      function errorLogin() {
+          // Fail message
+          $('#success').html("<div class='alert alert-danger'>");
+          $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+            .append("</button>");
+          $('#success > .alert-danger').append($("<strong>").text("Your Username or Password is invalid!"));
+          $('#success > .alert-danger').append('</div>');
+          //clear all fields
+          $('#contactForm').trigger("reset");
+        },
+	</script>
   </body>
 
 </html>

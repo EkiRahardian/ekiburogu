@@ -1,3 +1,18 @@
+<?php session_start();
+	include "function/databaseConnect.php";
+	include 'function/security.php';
+	$host  = $_SERVER['HTTP_HOST'];
+	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
+	$redirect = 'login.php';
+	$user_check = $_SESSION['login_user'];
+	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
+	$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
+	$login_session = $row['username'];
+	if(!isset($_SESSION['login_user']))
+	{
+		header("Location: https://$host$url/$redirect");
+	}	
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +58,7 @@
               <a class="nav-link" href="about.php">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contact.php">Contact</a>
+              <a class="nav-link" href="addarticle.php">Buat Artikel Baru</a>
             </li>
           </ul>
         </div>
@@ -57,8 +72,8 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="page-heading">
-              <h1>Contact Me</h1>
-              <span class="subheading">Have questions? I have answers.</span>
+              <h1>Buat Artikel Baru</h1>
+              <span class="subheading">Eki mau nulis apa hari ini?</span>
             </div>
           </div>
         </div>
@@ -69,36 +84,30 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!</p>
+          <p>Monggo tulis apa yang kamu pikirkan sekarang, tapi jangan nulis yang aneh-aneh ya.</p>
+		  <p>Perhatian: Kalau mau buat paragraf yang berbeda tambahkan "&lt;/p&gt;&lt;p&gt;" (Tanpa tanda kutip).</p>
           <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
           <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
           <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
           <form name="sentMessage" id="contactForm" novalidate>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
-                <label>Name</label>
-                <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                <label>Title</label>
+                <input type="text" class="form-control" placeholder="Title" id="name" required data-validation-required-message="Judulnya apa?">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
-                <label>Email Address</label>
-                <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <div class="control-group">
-              <div class="form-group col-xs-12 floating-label-form-group controls">
-                <label>Phone Number</label>
-                <input type="tel" class="form-control" placeholder="Phone Number" id="phone" required data-validation-required-message="Please enter your phone number.">
+                <label>Subtitle</label>
+                <input type="email" class="form-control" placeholder="Subtitle" id="email" required data-validation-required-message="Mau cerita soal apa?">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
-                <label>Message</label>
-                <textarea rows="5" class="form-control" placeholder="Message" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                <label>Content</label>
+                <textarea rows="20" class="form-control" placeholder="Content" id="message" required data-validation-required-message="Isinya apa?"></textarea>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
@@ -108,6 +117,7 @@
               <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
             </div>
           </form>
+		  <button onclick="location.href='logout.php';" type="submit" class="btn btn-secondary" id="sendMessageButton">Log Out</button>
         </div>
       </div>
     </div>
