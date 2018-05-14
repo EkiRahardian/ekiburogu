@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 	include "function/databaseConnect.php";
 ?>
 <!DOCTYPE html>
@@ -43,11 +43,16 @@
               <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.php">About</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="addarticle.php">Buat Artikel Baru</a>
             </li>
+			<?php
+			if(isset($_SESSION['login_user']))
+			{
+				echo '<li class="nav-item">';
+				echo '<a class="nav-link" href="logout.php">Log Out</a>';
+				echo '</li>';
+			}
+			?>
           </ul>
         </div>
       </div>
@@ -60,8 +65,8 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              <h1>Eki's Blog</h1>
+              <span class="subheading">Monggo dibaca baca</span>
             </div>
           </div>
         </div>
@@ -113,7 +118,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://twitter.com/Nau_Rizzz">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -121,7 +126,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://www.facebook.com/naufalrizky.r">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -129,7 +134,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://github.com/EkiRahardian/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -137,7 +142,7 @@
                 </a>
               </li>
             </ul>
-            <p class="copyright text-muted">Copyright &copy; Your Website 2018</p>
+            <p class="copyright text-muted">Copyright &copy; Eki's Blog 2018</p>
           </div>
         </div>
       </div>

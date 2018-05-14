@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 ?>
@@ -44,11 +44,16 @@
               <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.php">About</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="addarticle.php">Buat Artikel Baru</a>
             </li>
+			<?php
+			if(isset($_SESSION['login_user']))
+			{
+				echo '<li class="nav-item">';
+				echo '<a class="nav-link" href="logout.php">Log Out</a>';
+				echo '</li>';
+			}
+			?>
           </ul>
         </div>
       </div>
@@ -62,8 +67,11 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="post-heading">
 			<?php
-				$sql = "SELECT title, subtitle FROM `article` LIMIT 1 OFFSET " . sanitize($_GET['number']);
-				$result = $conn->query($sql);
+				$sql0 = "SELECT title, subtitle FROM `article` LIMIT 1 OFFSET " . sanitize($_GET['number']);
+				$result = $conn->query($sql0);
+				$host  = $_SERVER['HTTP_HOST'];
+				$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
+				$redirect = 'index.php';
 				if ($result->num_rows > 0)
 				{
 					while($row = $result->fetch_assoc())
@@ -96,14 +104,27 @@
 					while($row = $result->fetch_assoc())
 					{
 						echo '<p>' .$row["content"]. '</p>';
+						if($_SERVER["REQUEST_METHOD"] == "POST")
+						{
+							$sql2 = "DELETE FROM `article` WHERE content = '" . $row["content"] . "'";
+							$result2 = $conn->query($sql2);
+							header("Location: https://$host$url/$redirect");
+						}
 					}
 				}
 			?>
+			<form action="#" method="post">
+			<?php
+		  	if(isset($_SESSION['login_user']))
+			{
+				echo '<button class="btn btn-secondary">Delete</button>';
+			}
+			?>
+			</form>
           </div>
         </div>
       </div>
     </article>
-
     <hr>
 
     <!-- Footer -->
@@ -113,7 +134,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://twitter.com/Nau_Rizzz">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -121,7 +142,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://www.facebook.com/naufalrizky.r">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -129,7 +150,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://github.com/EkiRahardian/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -137,7 +158,7 @@
                 </a>
               </li>
             </ul>
-            <p class="copyright text-muted">Copyright &copy; Your Website 2018</p>
+            <p class="copyright text-muted">Copyright &copy; Eki's Blog 2018</p>
           </div>
         </div>
       </div>

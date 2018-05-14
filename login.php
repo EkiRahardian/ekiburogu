@@ -31,8 +31,8 @@
 	}
 	function errorLogin()
 	{
-		echo "<div class='alert alert-danger' id='error'>";
-		echo "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
+		echo "<div class='alert alert-danger'>";
+		echo "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;";
 		echo "</button>";
 		echo "<strong>Your Username or Password is invalid!</strong>";
 		echo "</div>";
@@ -80,11 +80,16 @@
               <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.php">About</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="addarticle.php">Buat Artikel Baru</a>
             </li>
+			<?php
+			if(isset($_SESSION['login_user']))
+			{
+				echo '<li class="nav-item">';
+				echo '<a class="nav-link" href="logout.php">Log Out</a>';
+				echo '</li>';
+			}
+			?>
           </ul>
         </div>
       </div>
@@ -113,7 +118,7 @@
           <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
           <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
           <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-          <form name="sentMessage" id="contactForm" novalidate>
+          <form name="sentMessage" novalidate>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Username</label>
@@ -129,7 +134,7 @@
               </div>
             </div>
             <br>
-            <div id="success"></div>
+            <div></div>
             <div class="form-group">
 			<?php
 				if ($failed == true)
@@ -137,7 +142,7 @@
 					errorLogin();
 				}
 			?>
-              <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Log In</button>
+              <button formmethod="post" class="btn btn-primary">Log In</button>
             </div>
           </form>
         </div>
@@ -153,7 +158,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://twitter.com/Nau_Rizzz">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -161,7 +166,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://www.facebook.com/naufalrizky.r">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -169,7 +174,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://github.com/EkiRahardian/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -177,7 +182,7 @@
                 </a>
               </li>
             </ul>
-            <p class="copyright text-muted">Copyright &copy; Your Website 2018</p>
+            <p class="copyright text-muted">Copyright &copy; Eki's Blog 2018</p>
           </div>
         </div>
       </div>
@@ -193,18 +198,6 @@
 
     <!-- Custom scripts for this template -->
     <script src="js/clean-blog.min.js"></script>
-	<script>
-	      function errorLogin() {
-          // Fail message
-          $('#success').html("<div class='alert alert-danger'>");
-          $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
-            .append("</button>");
-          $('#success > .alert-danger').append($("<strong>").text("Your Username or Password is invalid!"));
-          $('#success > .alert-danger').append('</div>');
-          //clear all fields
-          $('#contactForm').trigger("reset");
-        },
-	</script>
   </body>
 
 </html>

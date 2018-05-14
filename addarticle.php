@@ -1,6 +1,7 @@
 <?php session_start();
 	include "function/databaseConnect.php";
 	include 'function/security.php';
+	$success = false;
 	$host  = $_SERVER['HTTP_HOST'];
 	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
 	$redirect = 'login.php';
@@ -11,7 +12,24 @@
 	if(!isset($_SESSION['login_user']))
 	{
 		header("Location: https://$host$url/$redirect");
-	}	
+	}
+	if($_SERVER["REQUEST_METHOD"] == "POST")
+	{
+		$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
+		$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
+		$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
+		$sql = "INSERT INTO article (title, subtitle, content) VALUES ('$thisTitle','$thisSubtitle','$thisContent');";
+		$result = mysqli_query($conn,$sql);
+		$success = true;
+	}
+	function sendSuccess()
+	{
+		echo "<div class='alert alert-success'>";
+		echo "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;";
+		echo "</button>";
+		echo "<strong>Artikelnya sudah dipos!</strong>";
+		echo "</div>";
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,11 +73,16 @@
               <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.php">About</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="addarticle.php">Buat Artikel Baru</a>
             </li>
+			<?php
+			if(isset($_SESSION['login_user']))
+			{
+				echo '<li class="nav-item">';
+				echo '<a class="nav-link" href="logout.php">Log Out</a>';
+				echo '</li>';
+			}
+			?>
           </ul>
         </div>
       </div>
@@ -85,39 +108,43 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <p>Monggo tulis apa yang kamu pikirkan sekarang, tapi jangan nulis yang aneh-aneh ya.</p>
-		  <p>Perhatian: Kalau mau buat paragraf yang berbeda tambahkan "&lt;/p&gt;&lt;p&gt;" (Tanpa tanda kutip).</p>
           <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
           <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
           <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-          <form name="sentMessage" id="contactForm" novalidate>
+          <form name="sentMessage" novalidate>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>
-                <input type="text" class="form-control" placeholder="Title" id="name" required data-validation-required-message="Judulnya apa?">
+                <input type="text" class="form-control" placeholder="Title" id="name" name="title" required data-validation-required-message="Judulnya apa?">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Subtitle</label>
-                <input type="email" class="form-control" placeholder="Subtitle" id="email" required data-validation-required-message="Mau cerita soal apa?">
+                <input type="text" class="form-control" placeholder="Subtitle" id="email" name="subtitle" required data-validation-required-message="Mau cerita soal apa?">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Content</label>
-                <textarea rows="20" class="form-control" placeholder="Content" id="message" required data-validation-required-message="Isinya apa?"></textarea>
+                <textarea rows="10" class="form-control" placeholder="Content" id="message" name="content" required data-validation-required-message="Isinya apa?"></textarea>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <br>
-            <div id="success"></div>
+            <div></div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+			<?php
+				if ($success == true)
+				{
+					sendSuccess();
+				}
+			?>
+              <button formmethod="post" class="btn btn-primary">Kirim</button>
             </div>
           </form>
-		  <button onclick="location.href='logout.php';" type="submit" class="btn btn-secondary" id="sendMessageButton">Log Out</button>
         </div>
       </div>
     </div>
@@ -131,7 +158,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://twitter.com/Nau_Rizzz">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -139,7 +166,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://www.facebook.com/naufalrizky.r">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -147,7 +174,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://github.com/EkiRahardian/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -155,7 +182,7 @@
                 </a>
               </li>
             </ul>
-            <p class="copyright text-muted">Copyright &copy; Your Website 2018</p>
+            <p class="copyright text-muted">Copyright &copy; Eki's Blog 2018</p>
           </div>
         </div>
       </div>
