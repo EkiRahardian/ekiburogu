@@ -11,8 +11,9 @@ include "function/databaseConnect.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog - Start Bootstrap Theme</title>
-
+    <title>Eki's Blog</title>
+	<link rel="icon" type="image/gif" href="img/fifight.gif" />
+	
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -31,7 +32,7 @@ include "function/databaseConnect.php";
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.php">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.php">Eki's Blog</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
@@ -43,9 +44,6 @@ include "function/databaseConnect.php";
             </li>
             <li class="nav-item">
               <a class="nav-link" href="about.php">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="post.php">Sample Post</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="contact.php">Contact</a>
@@ -75,20 +73,19 @@ include "function/databaseConnect.php";
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
-		//Menghitung jumlah row di tabel
-		$sql = "SELECT * FROM `article`";
-		$connStatus = $conn->query($sql);
-		$numberOfRows = mysqli_num_rows($connStatus);
-		for ($x = 1; $x <= $numberOfRows; $x++)
-		{
-			$sql = "SELECT title, subtitle FROM `article` WHERE articleID = '$x'";
-			$result = mysqli_query($conn,$sql);
-			if (mysqli_num_rows($result) > 0)
+			//Menghitung jumlah row di tabel
+			$sql = "SELECT * FROM `article`";
+			$connStatus = $conn->query($sql);
+			$numberOfRows = mysqli_num_rows($connStatus);
+			$sql = "SELECT title, subtitle FROM `article`";
+			$result = $conn->query($sql);
+			if ($result->num_rows > 0)
 			{
-				while($row = mysqli_fetch_assoc($result))
+				$index = 0;
+				while($row = $result->fetch_assoc())
 				{
 					echo '<div class="post-preview">';
-						echo '<a href="post.php">';
+						echo '<a href="post.php?number=' .$index. '">';
 							echo '<h2 class="post-title">';
 								echo $row["title"];
 							echo '</h2>';
@@ -98,55 +95,11 @@ include "function/databaseConnect.php";
 						echo '</a>';
 					echo '</div>';
 					echo '<hr>';
+					$index++;
 				}
 			}
-		}
 		?>
-          <div class="post-preview">
-            <a href="post.php">
-              <h2 class="post-title">
-                Man must explore, and this is exploration at its greatest
-              </h2>
-              <h3 class="post-subtitle">
-                Problems look mighty small from 150 miles up
-              </h3>
-            </a>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.php">
-              <h2 class="post-title">
-                I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-              </h2>
-            </a>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.php">
-              <h2 class="post-title">
-                Science has not yet mastered prophecy
-              </h2>
-              <h3 class="post-subtitle">
-                We predict too much for the next year and yet far too little for the next ten.
-              </h3>
-            </a>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.php">
-              <h2 class="post-title">
-                Failure is not an option
-              </h2>
-              <h3 class="post-subtitle">
-                Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-              </h3>
-            </a>
-          </div>
-          <hr>
           <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-          </div>
         </div>
       </div>
     </div>
