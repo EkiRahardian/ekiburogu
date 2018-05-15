@@ -43,14 +43,22 @@
 					  <a class='nav-link' href='addarticle.php'>Buat Artikel Baru</a>
 					</li>
 	";
-					if(isset($_SESSION['login_user']))
-					{
-						echo "
-								<li class='nav-item'>
-									<a class='nav-link' href='logout.php'>Log Out</a>
-								</li>
-							";
-					}
+	if(isset($_SESSION['login_user']))
+	{
+	echo "
+					<li class='nav-item'>
+						<a class='nav-link' href='logout.php'>Log Out</a>
+					</li>
+	";
+	}
+	else
+	{
+	echo "
+					<li class='nav-item'>
+						<a class='nav-link' href='login.php'>Log In</a>
+					</li>
+	";
+	}
 	echo "
 				  </ul>
 				</div>
