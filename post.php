@@ -62,9 +62,6 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
 			<?php
-				$host  = $_SERVER['HTTP_HOST'];
-				$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
-				$redirect = 'index.php';
 			if(isset($_GET['number']))
 			{
 				$number = mysqli_real_escape_string($conn,sanitize($_GET['number']));
@@ -84,11 +81,15 @@
 							{
 								$sql2 = "DELETE FROM `article` WHERE articleID = " . $number;
 								$result2 = $conn->query($sql2);
-								header("Location: https://$host$url/$redirect");
+								echo'	<script type="text/javascript">
+											window.location.assign("https://" + window.location.hostname +"/ekiburogu/index.php");
+										</script>';
 							}
 							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit']))
 							{
-								header("Location: https://$host$url/editarticle.php?number=" . $number . "");
+								echo'	<script type="text/javascript">
+											window.location.assign("https://" + window.location.hostname +"/ekiburogu/editarticle.php?" + window.location.search.substr(1));
+										</script>';
 							}
 						}
 						if(isset($_SESSION['login_user']))

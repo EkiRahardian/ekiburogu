@@ -4,16 +4,15 @@
 	include "main/header.php";
 
 	$success = false;
-	$host  = $_SERVER['HTTP_HOST'];
-	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
-	$redirect = 'login.php';
 	$user_check = $_SESSION['login_user'];
 	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
 	$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
 	$login_session = $row['username'];
 	if(!isset($_SESSION['login_user']))
 	{
-		header("Location: https://$host$url/$redirect");
+		echo'	<script type="text/javascript">
+					window.location.assign("https://" + window.location.hostname +"/ekiburogu/login.php");
+				</script>';
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{

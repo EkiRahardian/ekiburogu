@@ -2,14 +2,12 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
-
 	$failed = false;
-	$host  = $_SERVER['HTTP_HOST'];
-	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
-	$redirect = 'index.php';
 	if(isset($_SESSION['login_user']))
 	{
-		header("Location: https://$host$url/$redirect");
+		echo'	<script type="text/javascript">
+					window.location.assign("https://" + window.location.hostname +"/ekiburogu/index.php");
+				</script>';
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
@@ -19,12 +17,13 @@
 		$sql = "SELECT username FROM administrator WHERE username = '$myusername' and password = '$mypassword'";
 		$result = mysqli_query($conn,$sql);
 		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-		$active = $row['active'];
 		$count = mysqli_num_rows($result);
 		if($count == 1)
 		{
 			$_SESSION['login_user'] = $myusername;
-			header("Location: https://$host$url/$redirect");
+			echo'	<script type="text/javascript">
+						window.location.assign("https://" + window.location.hostname +"/ekiburogu/index.php");
+					</script>';
 		}
 		else
 		{
