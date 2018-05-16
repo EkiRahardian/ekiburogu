@@ -1,5 +1,3 @@
-<?php
-	echo "
 		<hr>
 		<!-- Footer -->
 		<footer>
@@ -47,5 +45,3 @@
 	  </body>
 
 	</html>
-	";
-?>

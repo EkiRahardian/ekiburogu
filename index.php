@@ -1,6 +1,7 @@
 <?php session_start();
 	include "function/databaseConnect.php";
 	include "main/header.php";
+
 ?>
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('img/home-bg.jpg')">
@@ -23,9 +24,6 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
 			//Menghitung jumlah row di tabel
-			$sql = "SELECT * FROM `article`";
-			$connStatus = $conn->query($sql);
-			$numberOfRows = mysqli_num_rows($connStatus);
 			$sql = "SELECT title, subtitle FROM `article`";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0)

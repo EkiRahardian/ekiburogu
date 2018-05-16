@@ -2,10 +2,12 @@
 	include '../function/databaseConnect.php';
 	include '../function/security.php';
 	
-	$berhasil = 0;
+	$berhasil = false;
+	$gagal = false;
+	echo 'Test Log In<br><br>';
 	function login_userbenarpasswordbenar()
 	{
-		echo 'user benar password benar : ';
+		echo 'username benar & password benar : ';
 		$encryptPassword = encrypt('ekikurangajar');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize('ekirahardian'));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -16,7 +18,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['berhasil'] = true;
 		}
 		else
 		{
@@ -27,7 +29,7 @@
 	
 	function login_usersalahpasswordsalah()
 	{
-		echo 'user salah password salah: ';
+		echo 'username salah & password salah: ';
 		$encryptPassword = encrypt('ekikurangajar123');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize('ekirahardian123'));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -39,7 +41,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -50,7 +52,7 @@
 	
 	function login_userkosongpasswordkosong()
 	{
-		echo 'user kosong password kosong: ';
+		echo 'username kosong & password kosong: ';
 		$encryptPassword = encrypt('');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize(''));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -62,7 +64,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -73,7 +75,7 @@
 	
 	function login_usersalahpasswordbenar()
 	{
-		echo 'user salah password benar: ';
+		echo 'username salah & password benar: ';
 		$encryptPassword = encrypt('ekikurangajar');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize('ekirahardian123'));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -85,7 +87,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -96,7 +98,7 @@
 	
 	function login_usersalahpasswordkosong()
 	{
-		echo 'user salah password kosong: ';
+		echo 'username salah & password kosong: ';
 		$encryptPassword = encrypt('');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize('ekirahardian123'));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -108,7 +110,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -119,7 +121,7 @@
 	
 	function login_userbenarpasswordsalah()
 	{
-		echo 'user benar password salah: ';
+		echo 'username benar & password salah: ';
 		$encryptPassword = encrypt('ekikurangajar123');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize('ekirahardian'));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -131,7 +133,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -142,7 +144,7 @@
 	
 	function login_userbenarpasswordkosong()
 	{
-		echo 'user benar password kosong: ';
+		echo 'username benar & password kosong: ';
 		$encryptPassword = encrypt('');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize('ekirahardian'));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -154,7 +156,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -165,7 +167,7 @@
 	
 	function login_userkosongpasswordbenar()
 	{
-		echo 'user kosong password benar: ';
+		echo 'username kosong & password benar: ';
 		$encryptPassword = encrypt('ekikurangajar');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize(''));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -177,7 +179,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -188,7 +190,7 @@
 	
 	function login_userkosongpasswordsalah()
 	{
-		echo 'user kosong password salah: ';
+		echo 'username kosong & password salah: ';
 		$encryptPassword = encrypt('ekikurangajar123');
 		$myusername = mysqli_real_escape_string($GLOBALS['conn'],sanitize(''));
 		$mypassword = mysqli_real_escape_string($GLOBALS['conn'],sanitize($encryptPassword)); 
@@ -200,7 +202,7 @@
 		if($count == 1)
 		{
 			echo 'Tes Masuk Berhasil<br>';
-			$GLOBALS['berhasil']++;
+			$GLOBALS['gagal'] = true;
 		}
 		else
 		{
@@ -210,12 +212,12 @@
 	login_userkosongpasswordsalah();
 	
 	echo '<br>';
-	if($berhasil == 1)
+	if($berhasil == true && $gagal == false)
 	{
-		echo 'Testing berhasil, hanya kondisi username benar dan password benar yang dibolehkan masuk ke sesi log in';
+		echo 'Testing berhasil, hanya kondisi username benar & password benar yang dibolehkan masuk ke sesi log in';
 	}
 	else
 	{
-		echo 'Testing gagal, ada kondisi selain username benar dan password benar yang dibolehkan masuk ke sesi log in';
+		echo 'Testing gagal, ada kondisi selain username benar & password benar yang diperbolehkan masuk ke sesi log in, atau kondisi username benar & password benar tidak diperbolehkan login';
 	}
 ?>

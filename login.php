@@ -2,10 +2,11 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
+
 	$failed = false;
 	$host  = $_SERVER['HTTP_HOST'];
 	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
-	$redirect = 'addarticle.php';
+	$redirect = 'index.php';
 	if(isset($_SESSION['login_user']))
 	{
 		header("Location: https://$host$url/$redirect");
@@ -58,7 +59,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <p>Cuman Eki yang boleh bikin artikel baru, buktikan kalau kamu itu Eki!</p>
+          <p>Cuman Eki yang boleh bikin, edit, atau hapus artikel, buktikan kalau kamu itu Eki!</p>
           <form name="sentMessage" id="login">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">

@@ -2,6 +2,7 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
+
 	$success = false;
 	$host  = $_SERVER['HTTP_HOST'];
 	$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
@@ -16,10 +17,20 @@
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
+		$sql = "SELECT * FROM `article`";
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0)
+		{
+			$index = 0;
+			while($row = $result->fetch_assoc())
+			{
+				$index++;
+			}
+		}
 		$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
 		$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
 		$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
-		$sql = "INSERT INTO article (title, subtitle, content) VALUES ('$thisTitle','$thisSubtitle','$thisContent');";
+		$sql = "INSERT INTO article (articleID, title, subtitle, content) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent');";
 		$result = mysqli_query($conn,$sql);
 		$success = true;
 	}
@@ -83,7 +94,7 @@
 					sendSuccess();
 				}
 			?>
-              <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Kirim</button>
+              <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Buat</button>
             </div>
           </form>
         </div>

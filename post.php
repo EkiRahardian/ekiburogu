@@ -11,20 +11,28 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="post-heading">
 			<?php
-				$number0 = mysqli_real_escape_string($conn,sanitize($_GET['number']));
-				if(ctype_digit($number0))
+				if(isset($_GET['number']))
 				{
-					$sql0 = "SELECT title, subtitle FROM `article` LIMIT 1 OFFSET " . $number0;
-					$hitungTable0 = "SELECT COUNT(*) FROM article";
-					$hasilHitung0 = $conn->query($hitungTable0);
-					$rowHasil0 = $hasilHitung0->fetch_assoc();
-					$result = $conn->query($sql0);
-					if ($result->num_rows > 0 && (int)$number0 <= $rowHasil0['COUNT(*)'])
+					$number0 = mysqli_real_escape_string($conn,sanitize($_GET['number']));
+					if(ctype_digit($number0))
 					{
-						while($row = $result->fetch_assoc())
+						$sql0 = "SELECT title, subtitle FROM `article` WHERE articleID =" . $number0;
+						$hitungTable0 = "SELECT COUNT(*) FROM article";
+						$hasilHitung0 = $conn->query($hitungTable0);
+						$rowHasil0 = $hasilHitung0->fetch_assoc();
+						$result = $conn->query($sql0);
+						if ($result->num_rows > 0 && (int)$number0 < $rowHasil0['COUNT(*)'])
 						{
-							echo '<h1>' .$row["title"]. '</h1>
-							<h2 class="subheading">' .$row["subtitle"]. '</h2>';
+							while($row = $result->fetch_assoc())
+							{
+								echo '<h1>' .$row["title"]. '</h1>
+								<h2 class="subheading">' .$row["subtitle"]. '</h2>';
+							}
+						}
+						else
+						{
+							echo '<h1>404 Not Found</h1>
+							<h2 class="subheading">Aku Gak Pernah Nulis Itu :(</h2>';
 						}
 					}
 					else
@@ -48,7 +56,6 @@
         </div>
       </div>
     </header>
-
     <!-- Post Content -->
     <article>
       <div class="container">
@@ -58,31 +65,40 @@
 				$host  = $_SERVER['HTTP_HOST'];
 				$url   = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), '/\\');
 				$redirect = 'index.php';
+			if(isset($_GET['number']))
+			{
 				$number = mysqli_real_escape_string($conn,sanitize($_GET['number']));
 				if(ctype_digit($number))
 				{
-					$sql = "SELECT content FROM `article` LIMIT 1 OFFSET ". $number;
+					$sql = "SELECT content FROM `article` WHERE articleID = " . $number;
 					$hitungTable = "SELECT COUNT(*) FROM article";
 					$hasilHitung = $conn->query($hitungTable);
 					$rowHasil = $hasilHitung0->fetch_assoc();
 					$result = $conn->query($sql);
-					if ($result->num_rows > 0  && $number <= $rowHasil0['COUNT(*)'])
+					if ($result->num_rows > 0  && $number < $rowHasil0['COUNT(*)'])
 					{
-
 						while($row = $result->fetch_assoc())
 						{
 							echo '<p>' .$row["content"]. '</p>';
-							if($_SERVER["REQUEST_METHOD"] == "POST")
+							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete']))
 							{
-								$sql2 = "DELETE FROM `article` WHERE content = '" . $row["content"] . "'";
+								$sql2 = "DELETE FROM `article` WHERE articleID = " . $number;
 								$result2 = $conn->query($sql2);
 								header("Location: https://$host$url/$redirect");
+							}
+							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit']))
+							{
+								header("Location: https://$host$url/editarticle.php?number=" . $number . "");
 							}
 						}
 						if(isset($_SESSION['login_user']))
 						{
 							echo '	<form action="#" method="post">
-										<button class="btn btn-secondary">Delete</button>
+										<button name="delete" class="btn btn-secondary">Delete</button>
+									</form>
+									<br>
+									<form action="" method="post">
+										<button name="edit" class="btn btn-secondary">Edit</button>
 									</form>';
 						}
 					}
@@ -95,6 +111,11 @@
 				{
 					echo '<p>Coba cari lagi dengan mengklik "Home" di kanan atas halaman.</p>';
 				}
+			}
+			else
+			{
+				echo '<p>Coba cari lagi dengan mengklik "Home" di kanan atas halaman.</p>';
+			}
 			?>
           </div>
         </div>
