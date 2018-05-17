@@ -6,7 +6,7 @@
 	if(isset($_SESSION['login_user']))
 	{
 		echo'	<script type="text/javascript">
-					window.location.assign("https://" + window.location.hostname +"/ekiburogu/index.php");
+					redirect("index.php");
 				</script>';
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -22,7 +22,7 @@
 		{
 			$_SESSION['login_user'] = $myusername;
 			echo'	<script type="text/javascript">
-						window.location.assign("https://" + window.location.hostname +"/ekiburogu/index.php");
+						redirect("index.php");
 					</script>';
 		}
 		else

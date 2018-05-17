@@ -24,15 +24,14 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
 			//Menghitung jumlah row di tabel
-			$sql = "SELECT title, subtitle FROM `article`";
+			$sql = "SELECT articleID, title, subtitle FROM `article`";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0)
 			{
-				$index = 0;
 				while($row = $result->fetch_assoc())
 				{
 					echo '<div class="post-preview">
-						<a href="post.php?number=' .$index. '">
+						<a href="post.php?number=' .$row["articleID"]. '">
 							<h2 class="post-title">'.
 								$row["title"].
 							'</h2>
@@ -42,7 +41,6 @@
 						</a>
 					</div>
 					<hr>';
-					$index++;
 				}
 			}
 		?>

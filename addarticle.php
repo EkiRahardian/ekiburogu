@@ -4,26 +4,25 @@
 	include "main/header.php";
 
 	$success = false;
+	$index = NULL;
 	$user_check = $_SESSION['login_user'];
 	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
 	$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
 	$login_session = $row['username'];
-	if(!isset($_SESSION['login_user']))
+	if(!isset($user_check))
 	{
 		echo'	<script type="text/javascript">
-					window.location.assign("https://" + window.location.hostname +"/ekiburogu/login.php");
+					redirect("login.php");
 				</script>';
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
-		$sql = "SELECT * FROM `article`";
-		$result = $conn->query($sql);
-		if ($result->num_rows > 0)
+		for ($x = 1; $x <= 1000; $x++)
 		{
-			$index = 0;
-			while($row = $result->fetch_assoc())
-			{
-				$index++;
+			$result = mysqli_query($conn,"SELECT articleID FROM article WHERE articleID = ".$x);
+			if($result->num_rows == 0) {
+				 $index = $x;
+				 break;
 			}
 		}
 		$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));

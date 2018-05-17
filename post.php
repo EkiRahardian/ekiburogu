@@ -3,6 +3,14 @@
 	include 'function/security.php';
 	include "main/header.php";
 ?>
+	<script>
+		function editButton()
+		{
+			var number = String(window.location.search).substr(8);
+			var editLink = "editarticle.php";
+			document.write("<form action="+ editLink + "><button name='edit' value='"+ number +"' class='btn btn-secondary'>Edit</button></form>");
+		}
+	</script>
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('img/post-bg.jpg')">
       <div class="overlay"></div>
@@ -13,15 +21,12 @@
 			<?php
 				if(isset($_GET['number']))
 				{
-					$number0 = mysqli_real_escape_string($conn,sanitize($_GET['number']));
-					if(ctype_digit($number0))
+					$number = mysqli_real_escape_string($conn,sanitize($_GET['number']));
+					if(ctype_digit($number))
 					{
-						$sql0 = "SELECT title, subtitle FROM `article` WHERE articleID =" . $number0;
-						$hitungTable0 = "SELECT COUNT(*) FROM article";
-						$hasilHitung0 = $conn->query($hitungTable0);
-						$rowHasil0 = $hasilHitung0->fetch_assoc();
-						$result = $conn->query($sql0);
-						if ($result->num_rows > 0 && (int)$number0 < $rowHasil0['COUNT(*)'])
+						$sql = "SELECT title, subtitle FROM `article` WHERE articleID =" . $number;
+						$result = $conn->query($sql);
+						if ($result->num_rows > 0)
 						{
 							while($row = $result->fetch_assoc())
 							{
@@ -47,10 +52,6 @@
 					<h2 class="subheading">Aku Gak Pernah Nulis Itu :(</h2>';
 				}
 			?>
-              
-              <!--<span class="meta">Posted by
-                <a href="#">Start Bootstrap</a>
-                on August 24, 2018</span>-->
             </div>
           </div>
         </div>
@@ -64,15 +65,11 @@
 			<?php
 			if(isset($_GET['number']))
 			{
-				$number = mysqli_real_escape_string($conn,sanitize($_GET['number']));
 				if(ctype_digit($number))
 				{
 					$sql = "SELECT content FROM `article` WHERE articleID = " . $number;
-					$hitungTable = "SELECT COUNT(*) FROM article";
-					$hasilHitung = $conn->query($hitungTable);
-					$rowHasil = $hasilHitung0->fetch_assoc();
 					$result = $conn->query($sql);
-					if ($result->num_rows > 0  && $number < $rowHasil0['COUNT(*)'])
+					if ($result->num_rows > 0)
 					{
 						while($row = $result->fetch_assoc())
 						{
@@ -82,25 +79,19 @@
 								$sql2 = "DELETE FROM `article` WHERE articleID = " . $number;
 								$result2 = $conn->query($sql2);
 								echo'	<script type="text/javascript">
-											window.location.assign("https://" + window.location.hostname +"/ekiburogu/index.php");
-										</script>';
-							}
-							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit']))
-							{
-								echo'	<script type="text/javascript">
-											window.location.assign("https://" + window.location.hostname +"/ekiburogu/editarticle.php?" + window.location.search.substr(1));
+											redirect("index.php");
 										</script>';
 							}
 						}
 						if(isset($_SESSION['login_user']))
 						{
-							echo '	<form action="#" method="post">
-										<button name="delete" class="btn btn-secondary">Delete</button>
+							echo '	<form>
+										<button formmethod="post" name="delete" class="btn btn-secondary">Delete</button>
 									</form>
 									<br>
-									<form action="" method="post">
-										<button name="edit" class="btn btn-secondary">Edit</button>
-									</form>';
+									<script>
+										editButton();
+									</script>';
 						}
 					}
 					else

@@ -11,12 +11,12 @@
 	if(!isset($_SESSION['login_user']))
 	{
 		echo'	<script type="text/javascript">
-					window.location.assign("https://" + window.location.hostname +"/ekiburogu/login.php");
+					redirect("login.php");
 				</script>';
 	}
-	if(isset($_GET['number']))
+	if(isset($_GET['edit']))
 	{
-		$getNumber = mysqli_real_escape_string($conn,sanitize($_GET['number']));
+		$getNumber = mysqli_real_escape_string($conn,sanitize($_GET['edit']));
 		if(ctype_digit($getNumber))
 		{
 			if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -47,15 +47,14 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="page-heading">
 			<?php
-				if(isset($_GET['number']))
+				if(isset($_GET['edit']))
 				{
-					$number0 = mysqli_real_escape_string($conn,sanitize($_GET['number']));
-					if(ctype_digit($number0))
+					$number = mysqli_real_escape_string($conn,sanitize($_GET['edit']));
+					if(ctype_digit($number))
 					{
-						$hitungTable0 = "SELECT COUNT(*) FROM article";
-						$hasilHitung0 = $conn->query($hitungTable0);
-						$rowHasil0 = $hasilHitung0->fetch_assoc();;
-						if ((int)$number0 < $rowHasil0['COUNT(*)'])
+						$sql = "SELECT * FROM `article` WHERE articleID = " . $number;
+						$result = $conn->query($sql);
+						if ($result->num_rows > 0)
 						{
 								echo ' <h1>Edit Artikelnya</h1>
 									   <span class="subheading">Ada yang typo? atau mau ngeralat?</span>';
@@ -65,17 +64,12 @@
 							echo '<h1>404 Not Found</h1>
 							<span class="subheading">Gak ada artikelnya kok mau diedit :(</span>';
 						}
-					}
+				}
 					else
 					{
 						echo '<h1>404 Not Found</h1>
 						<span class="subheading">Gak ada artikelnya kok mau diedit :(</span>';
 					}
-				}
-				else
-				{
-					echo '<h1>404 Not Found</h1>
-					<span class="subheading">Gak ada artikelnya kok mau diedit :(</span>';
 				}
 			?>
             </div>
@@ -89,17 +83,14 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
-			if(isset($_GET['number']))
+			if(isset($_GET['edit']))
 			{
-				$number = mysqli_real_escape_string($conn,sanitize($_GET['number']));
+				$number = mysqli_real_escape_string($conn,sanitize($_GET['edit']));
 				if(ctype_digit($number))
 				{
 					$sql = "SELECT * FROM `article` WHERE articleID = " . $number;
-					$hitungTable = "SELECT COUNT(*) FROM article";
-					$hasilHitung = $conn->query($hitungTable);
-					$rowHasil = $hasilHitung->fetch_assoc();
 					$result = $conn->query($sql);
-					if ($result->num_rows > 0 && (int)$number < $rowHasil['COUNT(*)'])
+					if ($result->num_rows > 0)
 					{
 						while($row = $result->fetch_assoc())
 						{
