@@ -16,7 +16,6 @@
 		$mypassword = mysqli_real_escape_string($conn,sanitize($encryptPassword)); 
 		$sql = "SELECT username FROM administrator WHERE username = '$myusername' and password = '$mypassword'";
 		$result = mysqli_query($conn,$sql);
-		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		$count = mysqli_num_rows($result);
 		if($count == 1)
 		{
@@ -59,7 +58,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <p>Cuman Eki yang boleh bikin, edit, atau hapus artikel, buktikan kalau kamu itu Eki!</p>
-          <form name="sentMessage" id="login">
+          <form name="sentMessage" id="login" method="post">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Username</label>
@@ -83,7 +82,7 @@
 					errorLogin();
 				}
 			?>
-              <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Log In</button>
+              <button  class="btn btn-primary" id="sendMessageButton">Log In</button>
             </div>
           </form>
         </div>

@@ -4,6 +4,7 @@
 	include "main/header.php";
 
 	$success = false;
+	$failure = false;
 	$index = NULL;
 	$user_check = $_SESSION['login_user'];
 	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
@@ -25,12 +26,19 @@
 				 break;
 			}
 		}
-		$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
-		$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
-		$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
-		$sql = "INSERT INTO article (articleID, title, subtitle, content) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent');";
-		$result = mysqli_query($conn,$sql);
-		$success = true;
+		try
+		{
+			$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
+			$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
+			$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
+			$sql = "INSERT INTO article (articleID, title, subtitle, content) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent');";
+			$result = mysqli_query($conn,$sql);
+			$success = true;
+		}
+		catch(Exception $e)
+		{
+			$failure = true;
+		}
 	}
 	function sendSuccess()
 	{
@@ -38,6 +46,14 @@
 		<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;
 		</button>
 		<strong>Artikelnya sudah dipos!</strong>
+		</div>";
+	}
+	function sendFailure()
+	{
+		echo "<div class='alert alert-danger'>
+		<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;
+		</button>
+		<strong>Ada kesalahan ketika menyimpan artikel!</strong>
 		</div>";
 	}
 ?>
@@ -60,8 +76,18 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+		<?php
+			if ($success == true)
+			{
+				sendSuccess();
+			}
+			else if ($failure == true)
+			{
+				sendFailure();
+			}
+		?>
           <p>Monggo tulis apa yang kamu pikirkan sekarang, tapi jangan nulis yang aneh-aneh ya.</p>
-          <form name="sentMessage" id="contactForm">
+          <form name="sentMessage" id="contactForm" method="post">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>
@@ -86,13 +112,7 @@
             <br>
             <div></div>
             <div class="form-group">
-			<?php
-				if ($success == true)
-				{
-					sendSuccess();
-				}
-			?>
-              <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Buat</button>
+              <button class="btn btn-primary" id="sendMessageButton">Buat</button>
             </div>
           </form>
         </div>

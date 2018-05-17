@@ -4,6 +4,7 @@
 	include "main/header.php";
 
 	$success = false;
+	$failure = false;
 	$user_check = $_SESSION['login_user'];
 	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
 	$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
@@ -21,12 +22,19 @@
 		{
 			if($_SERVER["REQUEST_METHOD"] == "POST")
 			{
-				$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
-				$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
-				$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
-				$sql = "UPDATE article SET title ='$thisTitle',subtitle ='$thisSubtitle',content='$thisContent' WHERE articleID =" . $getNumber . ";";
-				$result = mysqli_query($conn,$sql);
-				$success = true;
+				try
+				{
+					$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
+					$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
+					$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
+					$sql = "UPDATE article SET title ='$thisTitle',subtitle ='$thisSubtitle',content='$thisContent' WHERE articleID =" . $getNumber . ";";
+					$result = mysqli_query($conn,$sql);
+					$success = true;
+				}
+				catch(Exception $e)
+				{
+					$failure = true;
+				}
 			}
 		}
 	}
@@ -36,6 +44,14 @@
 		<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;
 		</button>
 		<strong>Artikelnya sudah diedit!</strong>
+		</div>";
+	}
+	function sendFailure()
+	{
+		echo "<div class='alert alert-danger'>
+		<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;
+		</button>
+		<strong>Ada kesalahan ketika menyimpan perubahan!</strong>
 		</div>";
 	}
 ?>
@@ -83,6 +99,14 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
+			if ($success == true)
+			{
+				sendSuccess();
+			}
+			else if ($failure == true)
+			{
+				sendFailure();
+			}
 			if(isset($_GET['edit']))
 			{
 				$number = mysqli_real_escape_string($conn,sanitize($_GET['edit']));
@@ -96,7 +120,7 @@
 						{
 							echo '
 								  <p>Jangan lupa habis diedit klik tombol "Simpan", nanti artikelnya gak jadi ke edit lagi wkwkwkwk.</p>
-								  <form name="sentMessage" id="contactForm">
+								  <form name="sentMessage" id="contactForm" method="post">
 									<div class="control-group">
 									  <div class="form-group floating-label-form-group controls">
 										<label>Title</label>
@@ -121,13 +145,7 @@
 									<br>
 									<div></div>
 									<div class="form-group">
-							';
-										if ($success == true)
-										{
-											sendSuccess();
-										}
-							echo '
-									  <button formmethod="post" class="btn btn-primary" id="sendMessageButton">Simpan</button>
+									  <button  class="btn btn-primary" id="sendMessageButton">Simpan</button>
 									</div>
 								  </form>
 							';

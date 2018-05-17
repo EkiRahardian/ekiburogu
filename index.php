@@ -23,7 +23,6 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
-			//Menghitung jumlah row di tabel
 			$sql = "SELECT articleID, title, subtitle FROM `article`";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0)

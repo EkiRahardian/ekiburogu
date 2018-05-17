@@ -6,9 +6,7 @@
 	<script>
 		function editButton()
 		{
-			var number = String(window.location.search).substr(8);
-			var editLink = "editarticle.php";
-			document.write("<form action="+ editLink + "><button name='edit' value='"+ number +"' class='btn btn-secondary'>Edit</button></form>");
+			document.write("<form action=editarticle.php><button name='edit' value='"+ String(window.location.search).substr(8) +"' class='btn btn-secondary'>Edit</button></form>");
 		}
 	</script>
     <!-- Page Header -->
@@ -73,7 +71,7 @@
 					{
 						while($row = $result->fetch_assoc())
 						{
-							echo '<p>' .$row["content"]. '</p>';
+							echo '<p>' .nl2br($row["content"]). '</p>';
 							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete']))
 							{
 								$sql2 = "DELETE FROM `article` WHERE articleID = " . $number;
@@ -85,8 +83,8 @@
 						}
 						if(isset($_SESSION['login_user']))
 						{
-							echo '	<form>
-										<button formmethod="post" name="delete" class="btn btn-secondary">Delete</button>
+							echo '	<form method="post">
+										<button name="delete" class="btn btn-secondary">Delete</button>
 									</form>
 									<br>
 									<script>
