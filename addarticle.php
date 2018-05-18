@@ -2,7 +2,6 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
-	unset($_SESSION['number']);
 
 	$success = false;
 	$failure = false;

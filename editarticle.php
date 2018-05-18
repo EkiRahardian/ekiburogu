@@ -2,7 +2,6 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
-	unset($_SESSION['number']);
 
 	$success = false;
 	$failure = false;
@@ -104,9 +103,9 @@
 			{
 				sendFailure();
 			}
-			if(isset($_GET['edit']))
+			if(isset($number))
 			{
-				$number = mysqli_real_escape_string($conn,sanitize($_GET['edit']));
+				$number = mysqli_real_escape_string($conn,sanitize($number));
 				if(ctype_digit($number))
 				{
 					$sql = "SELECT * FROM `article` WHERE articleID = " . $number;

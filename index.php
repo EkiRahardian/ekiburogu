@@ -1,7 +1,6 @@
 <?php session_start();
 	include "function/databaseConnect.php";
 	include "main/header.php";
-	unset($_SESSION['number']);
 ?>
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('img/home-bg.jpg')">
@@ -23,7 +22,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
-			$sql = "SELECT articleID, title, subtitle, writer, YEAR(tanggalTulis), MONTH(tanggalTulis), DAY(tanggalTulis)	 FROM `article`";
+			$sql = "SELECT articleID, title, subtitle, writer, YEAR(tanggalTulis), MONTH(tanggalTulis), DAY(tanggalTulis)	 FROM `article` ORDER BY tanggalTulis DESC";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0)
 			{

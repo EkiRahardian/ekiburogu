@@ -2,7 +2,6 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
-	unset($_SESSION['number']);
 ?>
 	<script>
 		function editButton()
@@ -11,7 +10,7 @@
 		}
 		function deleteButton()
 		{
-			document.write("<form method=post><button name='delete' class='btn btn-secondary'>Delete</button></form>");
+			document.write("<form action=deletearticle.php><button name='delete' value='"+ String(window.location.search).substr(8) +"' class='btn btn-secondary'>Delete</button></form>");
 		}
 	</script>
     <!-- Page Header -->
@@ -70,7 +69,7 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
 			<?php
-			if(isset($_GET['number']))
+			if($number)
 			{
 				if(ctype_digit($number))
 				{
@@ -80,13 +79,6 @@
 					{
 						while($row = $result->fetch_assoc())
 						{
-							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete"]))
-							{
-								$_SESSION['number'] = $number;
-								echo '	<script>
-											redirect("deletearticle.php");
-										</script>';
-							}
 							echo '<p>' .nl2br($row["content"]). '</p>';
 						}
 						if(isset($_SESSION['login_user']))
