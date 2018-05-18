@@ -2,10 +2,10 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
+	unset($_SESSION['number']);
 
 	$success = false;
 	$failure = false;
-	$user_check = $_SESSION['login_user'];
 	if(!isset($_SESSION['login_user']))
 	{
 		echo'	<script type="text/javascript">

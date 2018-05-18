@@ -2,11 +2,16 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
+	unset($_SESSION['number']);
 ?>
 	<script>
 		function editButton()
 		{
 			document.write("<form action=editarticle.php><button name='edit' value='"+ String(window.location.search).substr(8) +"' class='btn btn-secondary'>Edit</button></form>");
+		}
+		function deleteButton()
+		{
+			document.write("<form method=post><button name='delete' class='btn btn-secondary'>Delete</button></form>");
 		}
 	</script>
     <!-- Page Header -->
@@ -75,25 +80,22 @@
 					{
 						while($row = $result->fetch_assoc())
 						{
-							echo '<p>' .nl2br($row["content"]). '</p>';
-							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete']))
+							if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete"]))
 							{
-								$sql2 = "DELETE FROM `article` WHERE articleID = " . $number;
-								$result2 = $conn->query($sql2);
-								echo'	<script type="text/javascript">
-											redirect("index.php");
+								$_SESSION['number'] = $number;
+								echo '	<script>
+											redirect("deletearticle.php");
 										</script>';
 							}
+							echo '<p>' .nl2br($row["content"]). '</p>';
 						}
 						if(isset($_SESSION['login_user']))
 						{
-							echo '	<form method="post">
-										<button name="delete" class="btn btn-secondary">Delete</button>
-									</form>
-									<br>
-									<script>
+							echo '	<script>
+										deleteButton();
+										document.write("<br>");
 										editButton();
-									</script>';
+									</script> ';
 						}
 					}
 					else

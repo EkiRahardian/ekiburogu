@@ -1,7 +1,7 @@
 <?php session_start();
 	include "function/databaseConnect.php";
 	include "main/header.php";
-
+	unset($_SESSION['number']);
 ?>
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('img/home-bg.jpg')">

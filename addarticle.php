@@ -2,12 +2,12 @@
 	include "function/databaseConnect.php";
 	include 'function/security.php';
 	include "main/header.php";
+	unset($_SESSION['number']);
 
 	$success = false;
 	$failure = false;
 	$index = NULL;
-	$user_check = $_SESSION['login_user'];
-	if(!isset($user_check))
+	if(!isset($_SESSION['login_user']))
 	{
 		echo'	<script type="text/javascript">
 					redirect("login.php");
@@ -25,10 +25,11 @@
 		}
 		try
 		{
+			$thisWriter = $_SESSION['login_user'];
 			$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
 			$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
 			$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
-			$sql = "INSERT INTO article (articleID, title, subtitle, content, writer, tanggalTulis) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent','$user_check',now());";
+			$sql = "INSERT INTO article (articleID, title, subtitle, content, writer, tanggalTulis) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent','$thisWriter',now());";
 			$result = mysqli_query($conn,$sql);
 			$success = true;
 		}
