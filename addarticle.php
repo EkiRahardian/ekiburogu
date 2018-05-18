@@ -1,6 +1,6 @@
 <?php session_start();
 	include "function/databaseConnect.php";
-	include 'function/security.php';
+	include 'function/sanitize.php';
 	include "main/header.php";
 
 	$success = false;

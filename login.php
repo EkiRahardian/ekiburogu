@@ -1,6 +1,7 @@
 <?php session_start();
 	include "function/databaseConnect.php";
-	include 'function/security.php';
+	include 'function/sanitize.php';
+	include 'function/encryption.php';
 	include "main/header.php";
 	$failed = false;
 	if(isset($_SESSION['login_user']))
