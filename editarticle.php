@@ -6,9 +6,6 @@
 	$success = false;
 	$failure = false;
 	$user_check = $_SESSION['login_user'];
-	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
-	$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
-	$login_session = $row['username'];
 	if(!isset($_SESSION['login_user']))
 	{
 		echo'	<script type="text/javascript">
@@ -27,7 +24,7 @@
 					$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
 					$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
 					$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
-					$sql = "UPDATE article SET title ='$thisTitle',subtitle ='$thisSubtitle',content='$thisContent' WHERE articleID =" . $getNumber . ";";
+					$sql = "UPDATE article SET title ='$thisTitle',subtitle ='$thisSubtitle',content='$thisContent', tanggalTulis=now() WHERE articleID =" . $getNumber . ";";
 					$result = mysqli_query($conn,$sql);
 					$success = true;
 				}

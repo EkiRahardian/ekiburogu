@@ -7,9 +7,6 @@
 	$failure = false;
 	$index = NULL;
 	$user_check = $_SESSION['login_user'];
-	$query = mysqli_query($conn,"SELECT username FROM administrator WHERE username = '$user_check'");
-	$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
-	$login_session = $row['username'];
 	if(!isset($user_check))
 	{
 		echo'	<script type="text/javascript">
@@ -31,7 +28,7 @@
 			$thisTitle = mysqli_real_escape_string($conn,sanitize($_POST['title']));
 			$thisSubtitle = mysqli_real_escape_string($conn,sanitize($_POST['subtitle']));
 			$thisContent = mysqli_real_escape_string($conn,sanitize($_POST['content']));
-			$sql = "INSERT INTO article (articleID, title, subtitle, content) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent');";
+			$sql = "INSERT INTO article (articleID, title, subtitle, content, writer, tanggalTulis) VALUES ('$index','$thisTitle','$thisSubtitle','$thisContent','$user_check',now());";
 			$result = mysqli_query($conn,$sql);
 			$success = true;
 		}

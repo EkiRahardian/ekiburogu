@@ -22,14 +22,18 @@
 					$number = mysqli_real_escape_string($conn,sanitize($_GET['number']));
 					if(ctype_digit($number))
 					{
-						$sql = "SELECT title, subtitle FROM `article` WHERE articleID =" . $number;
+						$sql = "SELECT title, subtitle, writer, YEAR(tanggalTulis), MONTH(tanggalTulis), DAY(tanggalTulis) FROM `article` WHERE articleID =" . $number;
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0)
 						{
 							while($row = $result->fetch_assoc())
 							{
+								$monthNum  = $row["MONTH(tanggalTulis)"];
+								$dateObj   = DateTime::createFromFormat('!m', $monthNum);
+								$monthName = $dateObj->format('F');
 								echo '<h1>' .$row["title"]. '</h1>
-								<h2 class="subheading">' .$row["subtitle"]. '</h2>';
+								<h2 class="subheading">' .$row["subtitle"]. '</h2>
+								<span class="meta">Posted by ' . $row["writer"] . ' on ' . $monthName . " " . $row["DAY(tanggalTulis)"] . ', ' . $row["YEAR(tanggalTulis)"] . '</span>';
 							}
 						}
 						else

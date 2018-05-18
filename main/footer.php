@@ -6,7 +6,7 @@
 			  <div class='col-lg-8 col-md-10 mx-auto'>
 				<ul class='list-inline text-center'>
 				  <li class='list-inline-item'>
-					<a href='https://twitter.com/Nau_Rizzz'>
+					<a href='https://twitter.com/Nau_Rizzz' target="_blank">
 					  <span class='fa-stack fa-lg'>
 						<i class='fa fa-circle fa-stack-2x'></i>
 						<i class='fa fa-twitter fa-stack-1x fa-inverse'></i>
@@ -14,7 +14,7 @@
 					</a>
 				  </li>
 				  <li class='list-inline-item'>
-					<a href='https://www.facebook.com/naufalrizky.r'>
+					<a href='https://www.facebook.com/naufalrizky.r' target="_blank">
 					  <span class='fa-stack fa-lg'>
 						<i class='fa fa-circle fa-stack-2x'></i>
 						<i class='fa fa-facebook fa-stack-1x fa-inverse'></i>
@@ -22,10 +22,18 @@
 					</a>
 				  </li>
 				  <li class='list-inline-item'>
-					<a href='https://github.com/EkiRahardian/'>
+					<a href='https://github.com/EkiRahardian/' target="_blank">
 					  <span class='fa-stack fa-lg'>
 						<i class='fa fa-circle fa-stack-2x'></i>
 						<i class='fa fa-github fa-stack-1x fa-inverse'></i>
+					  </span>
+					</a>
+				  </li>
+				  <li class='list-inline-item'>
+					<a href='https://plus.google.com/108237979631528756265' target="_blank">
+					  <span class='fa-stack fa-lg'>
+						<i class='fa fa-circle fa-stack-2x'></i>
+						<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
 					  </span>
 					</a>
 				  </li>

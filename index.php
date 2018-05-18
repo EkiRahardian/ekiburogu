@@ -23,12 +23,15 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 		<?php
-			$sql = "SELECT articleID, title, subtitle FROM `article`";
+			$sql = "SELECT articleID, title, subtitle, writer, YEAR(tanggalTulis), MONTH(tanggalTulis), DAY(tanggalTulis)	 FROM `article`";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0)
 			{
 				while($row = $result->fetch_assoc())
 				{
+					$monthNum  = $row["MONTH(tanggalTulis)"];
+					$dateObj   = DateTime::createFromFormat('!m', $monthNum);
+					$monthName = $dateObj->format('F');
 					echo '<div class="post-preview">
 						<a href="post.php?number=' .$row["articleID"]. '">
 							<h2 class="post-title">'.
@@ -38,6 +41,7 @@
 								$row["subtitle"].
 							'</h3>
 						</a>
+						<p class="post-meta">Posted by ' . $row["writer"] . ' on ' . $monthName . " " . $row["DAY(tanggalTulis)"] . ', ' . $row["YEAR(tanggalTulis)"] . '</p>
 					</div>
 					<hr>';
 				}
